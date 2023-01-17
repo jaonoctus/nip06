@@ -2,6 +2,8 @@
 
 ![tests](https://github.com/jaonoctus/nip06/actions/workflows/tests.yml/badge.svg)
 
+- [NIP-06 Specs](https://github.com/nostr-protocol/nips/blob/master/06.md)
+
 ## Install
 
 ```bash
