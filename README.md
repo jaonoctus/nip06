@@ -1,5 +1,7 @@
 # NIP06
 
+![tests](https://github.com/jaonoctus/nip06/actions/workflows/tests.yml/badge.svg)
+
 ## Install
 
 ```bash
