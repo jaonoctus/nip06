@@ -19,9 +19,10 @@ import {
 } from 'nip06'
 
 const mnemonic = 'zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo wrong'
+const passphrase = 'your super secure passphrase' // optional
 
 // hex format
-const { privateKey } = privateKeyFromSeedWords({ mnemonic })
+const { privateKey } = privateKeyFromSeedWords({ mnemonic, passphrase })
 const { publicKey } = getPublicKey({ privateKey })
 // bech32 format
 const { bech32PrivateKey } = getBech32PrivateKey({ privateKey })
