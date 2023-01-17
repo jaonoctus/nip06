@@ -37,19 +37,8 @@ export function getPublicKey({ privateKey }: { privateKey: string }): { publicKe
   }
 }
 
-function fromHexString(str: string): Uint8Array {
-  if (str.length % 2 !== 0 || !/^[0-9a-f]+$/i.test(str)) {
-    throw new Error('invalid hex string')
-  }
-  let buffer = new Uint8Array(str.length / 2)
-  for (let i = 0; i < buffer.length; i++) {
-    buffer[i] = parseInt(str.substring(2 * i, 2 * i + 2), 16)
-  }
-  return buffer
-}
-
 function hexToBech32(key: string, prefix: string) {
-  const words = bech32.toWords(fromHexString(key))
+  const words = bech32.toWords(secp256k1.utils.hexToBytes(key))
   return bech32.encode(prefix, words)
 }
 
