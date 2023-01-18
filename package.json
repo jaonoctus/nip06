@@ -1,21 +1,20 @@
 {
   "name": "nip06",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Nostr basic key derivation from mnemonic seed phrase",
   "author": "jaonoctus <jaonoctus@protonmail.com>",
   "license": "MIT",
   "main": "lib/index.js",
+  "module": "lib/index.mjs",
   "types": "lib/index.d.ts",
-  "files": [
-    "lib/**/*"
-  ],
   "scripts": {
-    "build": "tsc",
+    "build": "tsup src",
     "test": "vitest",
     "coverage": "vitest run --coverage"
   },
   "devDependencies": {
     "@vitest/coverage-c8": "0.27.2",
+    "tsup": "6.5.0",
     "typescript": "4.9.4",
     "vitest": "0.27.2"
   },
