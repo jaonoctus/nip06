@@ -1,4 +1,4 @@
-import { describe, expect, it } from '@jest/globals'
+import { describe, expect, it } from 'vitest'
 import { getBech32PrivateKey, privateKeyFromSeedWords, getPublicKey, getBech32PublicKey } from '../src/index'
 import { PUBLIC_KEY_PREFIX, SECRET_KEY_PREFIX } from '../src/constants'
 

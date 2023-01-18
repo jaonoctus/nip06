@@ -1,4 +1,4 @@
-import { describe, expect, it } from '@jest/globals'
+import { describe, expect, it } from 'vitest'
 import { getPublicKey } from '../src/index'
 
 const PRIVATE_KEY = '0e5744385ea9268b61019704036cb22dc4bd5103bf6fa55086da17d1aec5e620'
