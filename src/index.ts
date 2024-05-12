@@ -6,7 +6,7 @@ import {
   validateMnemonic
 } from '@scure/bip39'
 import { bech32 } from 'bech32'
-import { wordlist } from '@scure/bip39/wordlists/english.js'
+import { wordlist } from '@scure/bip39/wordlists/english'
 import { DERIVATION_PATH, PUBLIC_KEY_PREFIX, SECRET_KEY_PREFIX } from './constants'
 
 export function privateKeyFromSeedWords(
