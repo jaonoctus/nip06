@@ -1,4 +1,5 @@
-import * as secp256k1 from '@noble/secp256k1'
+import { secp256k1, schnorr } from '@noble/curves/secp256k1'
+import { hexToBytes, bytesToHex } from '@noble/curves/abstract/utils'
 import { HDKey } from '@scure/bip32'
 import {
   generateMnemonic,
@@ -6,7 +7,7 @@ import {
   validateMnemonic
 } from '@scure/bip39'
 import { bech32 } from 'bech32'
-import { wordlist } from '@scure/bip39/wordlists/english.js'
+import { wordlist } from '@scure/bip39/wordlists/english'
 import { DERIVATION_PATH, PUBLIC_KEY_PREFIX, SECRET_KEY_PREFIX } from './constants'
 
 export function privateKeyFromSeedWords(
@@ -21,24 +22,24 @@ export function privateKeyFromSeedWords(
     throw new Error('could not derive private key')
   }
   return {
-    privateKey: secp256k1.utils.bytesToHex(privateKey)
+    privateKey: bytesToHex(privateKey)
   }
 }
 
 export function generatePrivateKey(): { privateKey: string } {
   return {
-    privateKey: secp256k1.utils.bytesToHex(secp256k1.utils.randomPrivateKey())
+    privateKey: bytesToHex(secp256k1.utils.randomPrivateKey())
   }
 }
 
 export function getPublicKey({ privateKey }: { privateKey: string }): { publicKey: string } {
   return {
-    publicKey: secp256k1.utils.bytesToHex(secp256k1.schnorr.getPublicKey(privateKey))
+    publicKey: bytesToHex(schnorr.getPublicKey(privateKey))
   }
 }
 
 function hexToBech32(key: string, prefix: string) {
-  const words = bech32.toWords(secp256k1.utils.hexToBytes(key))
+  const words = bech32.toWords(hexToBytes(key))
   return bech32.encode(prefix, words)
 }
 
