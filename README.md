@@ -23,10 +23,14 @@ import {
 const mnemonic = 'zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo wrong'
 const passphrase = 'your super secure passphrase' // optional
 
-// hex format
 const { privateKey } = privateKeyFromSeedWords({ mnemonic, passphrase })
 const { publicKey } = getPublicKey({ privateKey })
-// bech32 format
 const { bech32PrivateKey } = getBech32PrivateKey({ privateKey })
 const { bech32PublicKey } = getBech32PublicKey({ publicKey })
+
+const extendedAccountIndex = 0
+const accountIndex = 0
+
+const { privateExtendedKey, publicExtendedKey } = extendedPairFromSeedWords(mnemonic, passphrase, extendedAccountIndex)
+const { privateKey, publicKey } = accountFromExtendedKey(privateExtendedKey, accountIndex)
 ```
