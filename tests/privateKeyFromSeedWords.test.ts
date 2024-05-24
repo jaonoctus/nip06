@@ -4,7 +4,7 @@ import { DERIVATION_PATH } from '../src/constants'
 
 describe('privateKeyFromSeedWords', () => {
   it('should use the NIP-06 derivation path', () => {
-    expect(DERIVATION_PATH).toBe(`m/44'/1237'/0'/0/0`)
+    expect(`${DERIVATION_PATH}/0'/0/0`).toBe(`m/44'/1237'/0'/0/0`)
   })
 
   it('should get a 64 bytes hex private key from mnemonic', () => {
