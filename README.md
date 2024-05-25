@@ -14,24 +14,43 @@ npm i nip06
 
 ```js
 import {
-  privateKeyFromSeedWords,
+  accountFromSeedWords,
+} from 'nip06'
+
+const mnemonic = 'zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo wrong'
+const passphrase = 'your super secure passphrase' // optional
+const accountIndex = 0
+
+const { privateKey, publicKey } = accountFromSeedWords(mnemonic, passphrase, accountIndex)
+```
+
+```js
+import {
+  accountFromRandomKey,
+} from 'nip06'
+
+const { privateKey, publicKey } = accountFromRandomKey()
+```
+
+```js
+import {
   getPublicKey,
   getBech32PrivateKey,
   getBech32PublicKey,
 } from 'nip06'
 
-const mnemonic = 'zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo wrong'
-const passphrase = 'your super secure passphrase' // optional
+const privateKey = '5f29af3b9676180290e77a4efad265c4c2ff28a5302461f73597fda26bb25731'
 
-const { privateKey } = privateKeyFromSeedWords({ mnemonic, passphrase })
-const { publicKey } = getPublicKey({ privateKey })
-const { bech32PrivateKey } = getBech32PrivateKey({ privateKey })
-const { bech32PublicKey } = getBech32PublicKey({ publicKey })
+const { publicKey } = getPublicKey(privateKey)
+const nsec = getBech32PrivateKey(privateKey)
+const npub = getBech32PublicKey(publicKey.hex)
+// or
+const npub = publicKey.bech32
 ```
 
 ```js
 import {
-  extendedPairFromSeedWords,
+  extendedKeysFromSeedWords,
   accountFromExtendedKey
 } from 'nip06'
 

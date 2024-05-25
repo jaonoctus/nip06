@@ -12,7 +12,7 @@ describe('accountFromExtendedKey', () => {
   })
 
   it('should get account from extended public key', () => {
-    const { privateKey, publicKey } = accountFromExtendedKey('xpub6D6V5EX8HTe95getx2tTH2QApmrA1nPJFEnneAK813RjcDdSc3WaAF7BRNpTF7o7zXjVm3DD3VMX66jhQ7wLaZ9sS6NzyfiwfzqDZbxvpDN')
+    const { publicKey } = accountFromExtendedKey('xpub6D6V5EX8HTe95getx2tTH2QApmrA1nPJFEnneAK813RjcDdSc3WaAF7BRNpTF7o7zXjVm3DD3VMX66jhQ7wLaZ9sS6NzyfiwfzqDZbxvpDN')
 
     expect(publicKey.hex).toBe('e8bcf3823669444d0b49ad45d65088635d9fd8500a75b5f20b59abefa56a144f')
     expect(publicKey.bech32).toBe('npub1az708q3kd9zy6z6f44zav5ygvdwelkzspf6mtusttx47lft2z38sghk0w7')
