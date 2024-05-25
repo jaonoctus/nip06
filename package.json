@@ -5,6 +5,10 @@
   "author": "jaonoctus <jaonoctus@protonmail.com>",
   "license": "MIT",
   "main": "lib/index.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/jaonoctus/nip06"
+  },
   "module": "lib/index.mjs",
   "types": "lib/index.d.ts",
   "scripts": {
