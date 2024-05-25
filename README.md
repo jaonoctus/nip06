@@ -60,7 +60,7 @@ const passphrase = 'your super secure passphrase' // optional
 const extendedAccountIndex = 0
 const accountIndex = 0
 
-const { privateExtendedKey, publicExtendedKey } = extendedPairFromSeedWords(mnemonic, passphrase, extendedAccountIndex)
+const { privateExtendedKey, publicExtendedKey } = extendedKeysFromSeedWords(mnemonic, passphrase, extendedAccountIndex)
 const { privateKey, publicKey } = accountFromExtendedKey(privateExtendedKey, accountIndex)
 ```
 
