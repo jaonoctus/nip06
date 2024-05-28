@@ -8,20 +8,27 @@ import {
 } from '@scure/bip39'
 import { bech32 } from 'bech32'
 import { wordlist } from '@scure/bip39/wordlists/english'
-import { DERIVATION_PATH, PUBLIC_KEY_PREFIX, SECRET_KEY_PREFIX } from './constants'
+import { 
+  DERIVATION_PATH,
+  PUBLIC_KEY_PREFIX,
+  SECRET_KEY_PREFIX
+} from './constants'
 
-type ExtendedKeys = {
-  privateExtendedKey: string,
-  publicExtendedKey: string
-}
-type PrivateKey = { hex: string, bech32: string }
-type PublicKey = { hex: string, bech32: string }
-type Account = {
-  privateKey: PrivateKey,
-  publicKey:  PublicKey
-}
+import { 
+  ExtendedKeys,
+  Key,
+  Account,
+} from './types'
 
-export function accountFromSeedWords(mnemonic: string, passphrase?: string, accountIndex = 0): Account {
+export function accountFromSeedWords({
+  mnemonic,
+  passphrase,
+  accountIndex = 0
+} : {
+  mnemonic: string,
+  passphrase?: string,
+  accountIndex?: number
+}): Account {
   const root = HDKey.fromMasterSeed(mnemonicToSeedSync(mnemonic, passphrase))
   const seed = root.derive(`${DERIVATION_PATH}/${accountIndex}'/0/0`)
   const privateKeyHex = bytesToHex(seed.privateKey!)
@@ -29,11 +36,11 @@ export function accountFromSeedWords(mnemonic: string, passphrase?: string, acco
   if (!privateKeyHex && !publicKeyHex) {
     throw new Error('could not derive key pair')
   }
-  const privateKeyBech32 = getBech32PrivateKey(privateKeyHex)
-  const publicKeyBech32 = getBech32PublicKey(publicKeyHex)
+  const { bech32PrivateKey } = getBech32PrivateKey({ privateKey: privateKeyHex })
+  const { bech32PublicKey } = getBech32PublicKey({ publicKey: publicKeyHex })
   return {
-    privateKey: { hex: privateKeyHex, bech32: privateKeyBech32 },
-    publicKey: { hex: publicKeyHex, bech32: publicKeyBech32 } 
+    privateKey: { hex: privateKeyHex, bech32: bech32PrivateKey },
+    publicKey: { hex: publicKeyHex, bech32: bech32PublicKey } 
   }
 }
 
@@ -43,28 +50,36 @@ export function accountFromRandomKey(): Account {
   if (!privateKeyHex && !publicKeyHex) {
     throw new Error('could not derive key pair')
   }
-  const privateKeyBech32 = getBech32PrivateKey(privateKeyHex)
-  const publicKeyBech32 = getBech32PublicKey(publicKeyHex)
+  const { bech32PrivateKey } = getBech32PrivateKey({ privateKey: privateKeyHex })
+  const { bech32PublicKey } = getBech32PublicKey({ publicKey: publicKeyHex })
   return {
-    privateKey: { hex: privateKeyHex, bech32: privateKeyBech32 },
-    publicKey: { hex: publicKeyHex, bech32: publicKeyBech32 } 
+    privateKey: { hex: privateKeyHex, bech32: bech32PrivateKey },
+    publicKey: { hex: publicKeyHex, bech32: bech32PublicKey } 
   }
 }
 
-export function getPublicKey(privateKey: string): {
-  publicKey: PublicKey
+export function getPublicKey({ privateKey }: { privateKey: string }): {
+  publicKey: Key
 } {
   const publicKeyHex = bytesToHex(schnorr.getPublicKey(privateKey))
   if (!publicKeyHex) {
     throw new Error('could not generate public key')
   }
-  const publicKeyBech32 = getBech32PublicKey(publicKeyHex)
+  const { bech32PublicKey } = getBech32PublicKey({ publicKey: publicKeyHex })
   return {
-    publicKey: { hex: publicKeyHex, bech32: publicKeyBech32 } 
+    publicKey: { hex: publicKeyHex, bech32: bech32PublicKey } 
   }
 }
 
-export function extendedKeysFromSeedWords(mnemonic: string, passphrase?: string, extendedAccountIndex = 0): ExtendedKeys {
+export function extendedKeysFromSeedWords({
+  mnemonic,
+  passphrase,
+  extendedAccountIndex = 0
+} : {
+  mnemonic: string,
+  passphrase?: string,
+  extendedAccountIndex?: number
+}): ExtendedKeys {
   let root = HDKey.fromMasterSeed(mnemonicToSeedSync(mnemonic, passphrase))
   let seed = root.derive(`${DERIVATION_PATH}/${extendedAccountIndex}'`)
   let privateExtendedKey = seed.privateExtendedKey
@@ -73,26 +88,32 @@ export function extendedKeysFromSeedWords(mnemonic: string, passphrase?: string,
   return { privateExtendedKey, publicExtendedKey }
 }
 
-export function accountFromExtendedKey(base58key: string, accountIndex = 0): {
-  privateKey?: PrivateKey,
-  publicKey:  PublicKey
+export function accountFromExtendedKey({ 
+  base58Key,
+  accountIndex = 0
+} : {
+  base58Key: string,
+  accountIndex?: number
+}): {
+  privateKey?: Key,
+  publicKey:  Key
 } {
-  let extendedKey = HDKey.fromExtendedKey(base58key)
-  let version = base58key.slice(0, 4)
+  let extendedKey = HDKey.fromExtendedKey(base58Key)
+  let version = base58Key.slice(0, 4)
   let child = extendedKey.deriveChild(0).deriveChild(accountIndex)
   let publicKeyHex = bytesToHex(child.publicKey!.slice(1))
   if (!publicKeyHex) throw new Error('could not derive public key')
-  let publicKeyBech32 = getBech32PublicKey(publicKeyHex)
+  const { bech32PublicKey } = getBech32PublicKey({ publicKey: publicKeyHex })
   if (version === 'xprv') {
     let privateKeyHex = bytesToHex(child.privateKey!)
     if (!privateKeyHex) throw new Error('could not derive private key')
-    let privateKeyBech32 = getBech32PrivateKey(privateKeyHex)
+    const { bech32PrivateKey } = getBech32PrivateKey({ privateKey: privateKeyHex })
     return { 
-      privateKey: { hex: privateKeyHex, bech32: privateKeyBech32 },
-      publicKey: { hex: publicKeyHex, bech32: publicKeyBech32 } 
+      privateKey: { hex: privateKeyHex, bech32: bech32PrivateKey },
+      publicKey: { hex: publicKeyHex, bech32: bech32PublicKey } 
     } 
   }
-  return { publicKey: { hex: publicKeyHex, bech32: publicKeyBech32 } } 
+  return { publicKey: { hex: publicKeyHex, bech32: bech32PublicKey } } 
 }
 
 function hexToBech32(key: string, prefix: string) {
@@ -100,12 +121,16 @@ function hexToBech32(key: string, prefix: string) {
   return bech32.encode(prefix, words)
 }
 
-export function getBech32PrivateKey(privateKey: string): string {
-  return hexToBech32(privateKey, SECRET_KEY_PREFIX)
+export function getBech32PrivateKey({ privateKey }: { privateKey: string }): { bech32PrivateKey: string } {
+  return {
+    bech32PrivateKey: hexToBech32(privateKey, SECRET_KEY_PREFIX)
+  }
 }
 
-export function getBech32PublicKey(publicKey: string): string {
-  return hexToBech32(publicKey, PUBLIC_KEY_PREFIX)
+export function getBech32PublicKey({ publicKey }: { publicKey: string }): { bech32PublicKey: string } {
+  return {
+    bech32PublicKey: hexToBech32(publicKey, PUBLIC_KEY_PREFIX)
+  }
 }
 
 export function generateSeedWords(): { mnemonic: string } {
@@ -114,7 +139,7 @@ export function generateSeedWords(): { mnemonic: string } {
   }
 }
 
-export function validateWords(mnemonic: string): { isMnemonicValid: boolean } {
+export function validateWords({ mnemonic }: { mnemonic: string }): { isMnemonicValid: boolean } {
   return {
     isMnemonicValid: validateMnemonic(mnemonic, wordlist)
   }

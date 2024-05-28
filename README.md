@@ -21,7 +21,7 @@ const mnemonic = 'zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo wrong'
 const passphrase = 'your super secure passphrase' // optional
 const accountIndex = 0
 
-const { privateKey, publicKey } = accountFromSeedWords(mnemonic, passphrase, accountIndex)
+const { privateKey, publicKey } = accountFromSeedWords({ mnemonic, passphrase, accountIndex })
 ```
 
 ```js
@@ -41,11 +41,11 @@ import {
 
 const privateKey = '5f29af3b9676180290e77a4efad265c4c2ff28a5302461f73597fda26bb25731'
 
-const { publicKey } = getPublicKey(privateKey)
-const nsec = getBech32PrivateKey(privateKey)
-const npub = getBech32PublicKey(publicKey.hex)
+const { publicKey } = getPublicKey({ privateKey })
+const { bech32PrivateKey } = getBech32PrivateKey({ privateKey })
+const { bech32PublicKey } = getBech32PublicKey({ publicKey.hex })
 // or
-const npub = publicKey.bech32
+const bech32PublicKey2 = publicKey.bech32
 ```
 
 ```js
@@ -56,12 +56,11 @@ import {
 
 const mnemonic = 'zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo wrong'
 const passphrase = 'your super secure passphrase' // optional
-
 const extendedAccountIndex = 0
 const accountIndex = 0
 
-const { privateExtendedKey, publicExtendedKey } = extendedKeysFromSeedWords(mnemonic, passphrase, extendedAccountIndex)
-const { privateKey, publicKey } = accountFromExtendedKey(privateExtendedKey, accountIndex)
+const { privateExtendedKey, publicExtendedKey } = extendedKeysFromSeedWords({ mnemonic, passphrase, extendedAccountIndex })
+const { privateKey, publicKey } = accountFromExtendedKey({ base58Key: privateExtendedKey, accountIndex })
 ```
 
 ```js
@@ -72,5 +71,5 @@ import {
 const publicExtendedKey = 'xpub6C2FTj1fmB2GES9CSxbXYtrve372NjoHLLQxYRGb9qXbMWBLdDH5qQ7pm29LQuYaF4HzFUsdkcj4jurBU3ebF7xkVNbVTY3MCp9mEiX4Te5'
 const accountIndex = 0
 
-const { publicKey } = accountFromExtendedKey(publicExtendedKey, accountIndex)
+const { publicKey } = accountFromExtendedKey({ base58Key: publicExtendedKey, accountIndex })
 ```
