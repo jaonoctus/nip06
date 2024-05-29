@@ -89,18 +89,18 @@ export function extendedKeysFromSeedWords({
 }
 
 export function accountFromExtendedKey({ 
-  base58Key,
+  extendedKey,
   accountIndex = 0
 } : {
-  base58Key: string,
+  extendedKey: string,
   accountIndex?: number
 }): {
   privateKey?: Key,
   publicKey:  Key
 } {
-  let extendedKey = HDKey.fromExtendedKey(base58Key)
-  let version = base58Key.slice(0, 4)
-  let child = extendedKey.deriveChild(0).deriveChild(accountIndex)
+  let seed = HDKey.fromExtendedKey(extendedKey)
+  let version = extendedKey.slice(0, 4)
+  let child = seed.deriveChild(0).deriveChild(accountIndex)
   let publicKeyHex = bytesToHex(child.publicKey!.slice(1))
   if (!publicKeyHex) throw new Error('could not derive public key')
   const { bech32PublicKey } = getBech32PublicKey({ publicKey: publicKeyHex })

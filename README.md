@@ -60,7 +60,7 @@ const extendedAccountIndex = 0
 const accountIndex = 0
 
 const { privateExtendedKey, publicExtendedKey } = extendedKeysFromSeedWords({ mnemonic, passphrase, extendedAccountIndex })
-const { privateKey, publicKey } = accountFromExtendedKey({ base58Key: privateExtendedKey, accountIndex })
+const { privateKey, publicKey } = accountFromExtendedKey({ extendedKey: privateExtendedKey, accountIndex })
 ```
 
 ```js
@@ -71,5 +71,5 @@ import {
 const publicExtendedKey = 'xpub6C2FTj1fmB2GES9CSxbXYtrve372NjoHLLQxYRGb9qXbMWBLdDH5qQ7pm29LQuYaF4HzFUsdkcj4jurBU3ebF7xkVNbVTY3MCp9mEiX4Te5'
 const accountIndex = 0
 
-const { publicKey } = accountFromExtendedKey({ base58Key: publicExtendedKey, accountIndex })
+const { publicKey } = accountFromExtendedKey({ extendedKey: publicExtendedKey, accountIndex })
 ```
